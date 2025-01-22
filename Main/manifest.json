@@ -1,18 +1,23 @@
 {
-    "manifest_version": 3,
-    "name": "Virtual Mouse Simulator",
-    "version": "1.0",
-    "description": "Simulates human-like mouse movements to obfuscate tracking.",
-    "permissions": ["scripting", "activeTab"],
-    "host_permissions": ["<all_urls>"],
-    "background": {
-      "service_worker": "background.js"
-    },
-    "content_scripts": [
-      {
-        "matches": ["<all_urls>"],
-        "js": ["content.js"]
-      }
-    ]
+  "manifest_version": 3,
+  "name": "Virtual Mouse Simulator",
+  "version": "1.0",
+  "description": "Simulates human-like mouse movements to obfuscate tracking and automate testing.",
+  "permissions": ["scripting", "activeTab"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "scripts": ["background.js"],
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{7b3d479a-8164-4e76-baaa-3361a338cca1}"
+    }
   }
-  
+}
