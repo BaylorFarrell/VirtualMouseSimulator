@@ -8,11 +8,14 @@
         },
         minDelay: 2000,
         maxDelay: 5000,
-        hoverProbability: 0.4
+        hoverProbability: 0.4,
+        clickProbability: 0.2, // Probability of clicks
     };
 
     let virtualMouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
     let isRunning = true;
+
+    const excludeSelectors = '[role="slider"], .ytp-progress-bar, .ytp-volume-slider'; // Exclude sliders
 
     const getRandomCoordinate = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
@@ -45,7 +48,8 @@
     };
 
     const hoverRandomElement = () => {
-        const elements = Array.from(document.querySelectorAll('button, a, input')).filter(el => el.offsetParent !== null);
+        const elements = Array.from(document.querySelectorAll('button, a, input'))
+            .filter(el => el.offsetParent !== null && !el.matches(excludeSelectors));
         if (!elements.length) return;
 
         const element = elements[Math.floor(Math.random() * elements.length)];
@@ -58,7 +62,22 @@
         setTimeout(() => {
             if (!isRunning) return;
             triggerMouseEvent('mouseover', x, y, element);
-        }, 1000);
+
+            // Exit the hover area after a delay
+            setTimeout(() => {
+                const exitX = x + 10; // Slightly offset exit
+                const exitY = y + 10;
+                moveAlongBezierCurve(x, y, exitX, exitY);
+            }, 1000);
+        }, 500);
+    };
+
+    const simulateClick = (x, y, element) => {
+        if (element.matches(excludeSelectors) || Math.random() > config.clickProbability) return;
+
+        triggerMouseEvent('mousedown', x, y, element);
+        setTimeout(() => triggerMouseEvent('mouseup', x, y, element), 100);
+        triggerMouseEvent('click', x, y, element);
     };
 
     const simulateMouseActions = () => {

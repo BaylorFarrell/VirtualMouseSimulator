@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Virtual Mouse Simulator",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Simulates human-like mouse movements to obfuscate tracking and automate testing.",
   "permissions": ["scripting", "activeTab"],
   "host_permissions": ["<all_urls>"],
